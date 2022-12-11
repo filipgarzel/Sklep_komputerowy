@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="507.0" prefWidth="664.0" styleClass="root" stylesheets="@img/styling.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HelloController">
+   <children>
+      <BorderPane prefHeight="100.0" prefWidth="100.0" stylesheets="@img/styling.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <left>
+            <VBox prefHeight="507.0" prefWidth="249.0" stylesheets="@img/styling.css" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Sklep komputerowy" textFill="#cccccc">
+                           <font>
+                              <Font name="Cambria Bold" size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="217.0">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#switchtoStart" text="Powrót">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Pane prefHeight="60.0" prefWidth="85.0" />
+                        <Button fx:id="koszyk" mnemonicParsing="false" onAction="#switchtoKoszyk" text="Koszyk" />
+                     </children>
+                  </HBox>
+                  <VBox fx:id="chosenItemCard" prefHeight="257.0" prefWidth="203.0" styleClass="chosen-item" stylesheets="@img/styling.css">
+                     <padding>
+                        <Insets left="100.0" right="100.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="61.0">
+                           <VBox.margin>
+                              <Insets left="-90.0" right="-90.0" />
+                           </VBox.margin>
+                           <children>
+                              <Label fx:id="chosenname" prefHeight="27.0" prefWidth="179.0" text="I7-10700F" textFill="#fffefe">
+                                 <font>
+                                    <Font name="Berlin Sans FB Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="chosenprice" prefHeight="27.0" prefWidth="144.0" text="1200 zł" textFill="#fffefe">
+                                 <font>
+                                    <Font name="Berlin Sans FB Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <ImageView fx:id="chosenimg" fitHeight="180.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets left="-80.0" right="-80.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@img/procesori7.jpg" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </VBox>
+                  <HBox prefHeight="88.0" prefWidth="249.0">
+                     <children>
+                        <TextArea fx:id="opis" prefHeight="84.0" prefWidth="249.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="65.0" prefWidth="227.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#dodajDoKoszyka" text="Dodaj do koszyka" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </left>
+         <center>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Pane prefHeight="100.0" prefWidth="136.0">
+                           <children>
+                              <ChoiceBox fx:id="filtruj" layoutY="37.0" prefHeight="25.0" prefWidth="127.0" />
+                              <Label layoutX="6.0" layoutY="-4.0" prefHeight="36.0" prefWidth="43.0" text="Filtruj" textAlignment="CENTER" textFill="#ff6a00">
+                                 <font>
+                                    <Font name="Cambria" size="14.0" />
+                                 </font></Label>
+                           </children></Pane>
+                        <HBox prefHeight="100.0" prefWidth="111.0" />
+                        <Pane prefHeight="100.0" prefWidth="151.0">
+                           <children>
+                              <ChoiceBox fx:id="sortuj" layoutX="-2.0" layoutY="37.0" prefWidth="150.0" />
+                              <Label layoutX="9.0" layoutY="-2.0" prefHeight="36.0" prefWidth="43.0" text="Sortuj" textAlignment="CENTER" textFill="#ff6a00">
+                                 <font>
+                                    <Font name="Cambria" size="14.0" />
+                                 </font></Label>
+                           </children>
+                        </Pane>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="407.0" prefWidth="420.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <ScrollPane fx:id="scroll" prefHeight="407.0" prefWidth="417.0">
+                           <content>
+                              <GridPane fx:id="mygrid" prefHeight="110.0" prefWidth="107.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                              </GridPane>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="50.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,19 @@
+.root {
+    -fx-background-image: url("tło.png");
+}
+.left-bar{
+    -fx-background-color: #060B4E;
+}
+
+.chosen-item{
+    -fx-background-color: #212EE7;
+    -fx-background-radius: 30;
+}
+
+.item{
+    -fx-background-color: #FFFFFF;
+}
+.pane{
+    -fx-background-color: #00ffa2;
+}
+
