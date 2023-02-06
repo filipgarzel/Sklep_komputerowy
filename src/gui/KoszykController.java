@@ -56,7 +56,7 @@ public class KoszykController {
         summary.setText(display);
         suma =0;
         for(int i=0; i<koszyk.size();i++){
-            suma+=koszyk.get(i).getCena();
+            suma+=Integer.parseInt(koszyk.get(i).getCena());
         }
         koszykInfo.setText("Do zaplaty: "+suma+" zł");
         saldo.setText(Integer.toString(usr.getSaldo()));
@@ -86,13 +86,13 @@ public class KoszykController {
             basket.remove(Integer.parseInt(delete.getText())-1);
             for (int i = 0; i < basket.size(); i++) {
                 result+= basket.get(i).getNazwa() + "\n ";
-                suma+=basket.get(i).getCena();
+                suma+=Integer.parseInt(basket.get(i).getCena());
             }
             summary.setText(result);
         }
         int suma =0;
         for(int i=0; i<basket.size();i++){
-            suma+=basket.get(i).getCena();
+            suma+=Integer.parseInt(basket.get(i).getCena());
         }
         koszykInfo.setText("Do zaplaty: "+suma+" zł");
 

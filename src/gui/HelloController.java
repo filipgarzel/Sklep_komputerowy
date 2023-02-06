@@ -19,10 +19,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 public class HelloController implements Initializable {
@@ -84,7 +81,7 @@ public class HelloController implements Initializable {
     private Image obraz;
     private MyListener myListener;
     private static String maill;
-    private Komponent komponent;
+    private Komponent komponent = new Komponent();
     private Komponent temp;
     private List<Komponent> components = new ArrayList<>();
     private List<Komponent> wKoszyku = new ArrayList<>();
@@ -191,7 +188,7 @@ public class HelloController implements Initializable {
         stage.setScene(scene);
         stage.show();
         detailsController.setDetails(temp, myListener);
-        detailsController.setSpecifics(temp);
+
     }
 
     public void switchtoKoszyk(ActionEvent event) throws Exception {
@@ -220,7 +217,7 @@ public class HelloController implements Initializable {
     }
 
 
-    public void filtrowanie(ActionEvent event) {
+    public void filtrowanie(ActionEvent event) throws SQLException {
         if (filtruj.getValue() == "Procesory") {
             components.clear();
             components.addAll(getData());
@@ -263,89 +260,117 @@ public class HelloController implements Initializable {
             loadGrid(components, mygrid);
         } else {
             components.clear();
+//            for(int i=0; i<dataConnection.getKomponent().size();i++){
+//                components.addAll(dataConnection.getKomponent().get(i));
+//            }
             components.addAll(getData());
             loadGrid(components, mygrid);
         }
     }
 
 
+    private List<Komponent> getData() throws SQLException {
+
+        List<Komponent> components2 = new ArrayList<>();
+//        System.out.println("data size:");
+//        System.out.println(dataConnection.getKomponent().size());
+        components2 = dataConnection.getKomponent();
+       // System.out.println(dataConnection.getKomponent().get(0));
+
+//        for(int i=10; i<159; i++){
+//            komponent.setKompID(dataConnection.getKomponent().get(i)[0]);
+//            komponent.setMarka(dataConnection.getKomponent().get(i)[1]);
+//            komponent.setNazwa(dataConnection.getKomponent().get(i)[2]);
+//            komponent.setCena(dataConnection.getKomponent().get(i)[3]);
+//            komponent.setOceny(dataConnection.getKomponent().get(i)[4]);
+//            komponent.setOpis(dataConnection.getKomponent().get(i)[5]);
+//            components2.add(komponent);
+//            System.out.println(komponent);
+//        }
+
+//        while( i<168){
+//            komponent.setKompID(dataConnection.getKomponent(i)[0]);
+//            komponent.setMarka(dataConnection.getKomponent(i)[1]);
+//            komponent.setNazwa(dataConnection.getKomponent(i)[2]);
+//            komponent.setCena(dataConnection.getKomponent(i)[3]);
+//            komponent.setOceny(dataConnection.getKomponent(i)[4]);
+//            komponent.setOpis(dataConnection.getKomponent(i)[5]);
+//            components.add(komponent);
+//            i += 1;
+//        }
 
 
-    private List<Komponent> getData() {
-        List<Komponent> components = new ArrayList<>();
+//        komponent = new PłytaGłówna();
+//        komponent.setNazwa("Aorus Elite");
+//        komponent.setCena(400);
+//        komponent.setImage("img/gigaabyte.jpg");
+//        komponent.setOceny(7.9);
+//        components.add(komponent);
+//
+//        komponent = new KartaGraficzna();
+//        komponent.setNazwa("1050 TI");
+//        komponent.setCena(1350);
+//        komponent.setImage("img/1050ti.jpg");
+//        komponent.setOceny(6.5);
+//        components.add(komponent);
+//
+//        komponent = new RAM();
+//        komponent.setNazwa("GoodRAM");
+//        komponent.setCena(75);
+//        komponent.setImage("img/goodram.jpg");
+//        komponent.setOceny(7.7);
+//        components.add(komponent);
+//
+//        komponent = new KartaGraficzna();
+//        komponent.setNazwa("Radeon WX");
+//        komponent.setCena(800);
+//        komponent.setImage("img/amdradeonpro.jpg");
+//        komponent.setOceny(7.1);
+//        components.add(komponent);
+//
+//        komponent = new Procesor();
+//        komponent.setNazwa("I7-10700F");
+//        komponent.setCena(1200);
+//        komponent.setImage("img/procesori7.jpg");
+//        komponent.setOceny(8.5);
+//        components.add(komponent);
+//
+//        komponent = new Procesor();
+//        komponent.setNazwa("Ryzen 5");
+//        komponent.setCena(1400);
+//        komponent.setImage("img/amdprocesor.jpg");
+//        komponent.setOceny(8.1);
+//        components.add(komponent);
+//
+//        komponent = new PłytaGłówna();
+//        komponent.setNazwa("MSI MPG");
+//        komponent.setCena(1000);
+//        komponent.setImage("img/msi.jpg");
+//        komponent.setOceny(9.0);
+//        components.add(komponent);
+//
+//        komponent = new Procesor();
+//        komponent.setNazwa("i3-10100F");
+//        komponent.setCena(350);
+//        komponent.setImage("img/i3procesor.jpg");
+//        komponent.setOceny(7.0);
+//        components.add(komponent);
+//
+//        komponent = new KartaGraficzna();
+//        komponent.setNazwa("Radeon RX");
+//        komponent.setCena(10000);
+//        komponent.setImage("img/asus.jpg");
+//        komponent.setOceny(9.5);
+//        components.add(komponent);
+//
+//        komponent = new RAM();
+//        komponent.setNazwa("Ram Patriot");
+//        komponent.setCena(250);
+//        komponent.setImage("img/patriotram.jpg");
+//        komponent.setOceny(8.3);
+//        components.add(komponent);
 
-
-        komponent = new PłytaGłówna();
-        komponent.setNazwa("Aorus Elite");
-        komponent.setCena(400);
-        komponent.setImage("img/gigaabyte.jpg");
-        komponent.setOceny(7.9);
-        components.add(komponent);
-
-        komponent = new KartaGraficzna();
-        komponent.setNazwa("1050 TI");
-        komponent.setCena(1350);
-        komponent.setImage("img/1050ti.jpg");
-        komponent.setOceny(6.5);
-        components.add(komponent);
-
-        komponent = new RAM();
-        komponent.setNazwa("GoodRAM");
-        komponent.setCena(75);
-        komponent.setImage("img/goodram.jpg");
-        komponent.setOceny(7.7);
-        components.add(komponent);
-
-        komponent = new KartaGraficzna();
-        komponent.setNazwa("Radeon WX");
-        komponent.setCena(800);
-        komponent.setImage("img/amdradeonpro.jpg");
-        komponent.setOceny(7.1);
-        components.add(komponent);
-
-        komponent = new Procesor();
-        komponent.setNazwa("I7-10700F");
-        komponent.setCena(1200);
-        komponent.setImage("img/procesori7.jpg");
-        komponent.setOceny(8.5);
-        components.add(komponent);
-
-        komponent = new Procesor();
-        komponent.setNazwa("Ryzen 5");
-        komponent.setCena(1400);
-        komponent.setImage("img/amdprocesor.jpg");
-        komponent.setOceny(8.1);
-        components.add(komponent);
-
-        komponent = new PłytaGłówna();
-        komponent.setNazwa("MSI MPG");
-        komponent.setCena(1000);
-        komponent.setImage("img/msi.jpg");
-        komponent.setOceny(9.0);
-        components.add(komponent);
-
-        komponent = new Procesor();
-        komponent.setNazwa("i3-10100F");
-        komponent.setCena(350);
-        komponent.setImage("img/i3procesor.jpg");
-        komponent.setOceny(7.0);
-        components.add(komponent);
-
-        komponent = new KartaGraficzna();
-        komponent.setNazwa("Radeon RX");
-        komponent.setCena(10000);
-        komponent.setImage("img/asus.jpg");
-        komponent.setOceny(9.5);
-        components.add(komponent);
-
-        komponent = new RAM();
-        komponent.setNazwa("Ram Patriot");
-        komponent.setCena(250);
-        komponent.setImage("img/patriotram.jpg");
-        komponent.setOceny(8.3);
-        components.add(komponent);
-
-        return components;
+        return components2;
     }
 
     private void loadGrid(List<Komponent> componentss, GridPane grid) {
@@ -434,7 +459,7 @@ public class HelloController implements Initializable {
             for (int i = 1; i < components.size(); i++) {
                 pom = i;
                 actual = components.get(i);
-                while (pom > 0 && components.get(pom - 1).getCena() > actual.getCena()) {
+                while (pom > 0 && Integer.parseInt(components.get(pom - 1).getCena()) > Integer.parseInt(actual.getCena())) {
                     components.set(pom, components.get(pom - 1));
                     pom--;
                 }
@@ -447,7 +472,7 @@ public class HelloController implements Initializable {
             for (int i = 1; i < components.size(); i++) {
                 pom = i;
                 actual = components.get(i);
-                while (pom > 0 && components.get(pom - 1).getCena() < actual.getCena()) {
+                while (pom > 0 && Integer.parseInt(components.get(pom - 1).getCena()) < Integer.parseInt(actual.getCena())) {
                     components.set(pom, components.get(pom - 1));
                     pom--;
                 }
@@ -459,7 +484,7 @@ public class HelloController implements Initializable {
             for (int i = 1; i < components.size(); i++) {
                 pom = i;
                 actual = components.get(i);
-                while (pom > 0 && components.get(pom - 1).getOceny() > actual.getOceny()) {
+                while (pom > 0 && Integer.parseInt(components.get(pom - 1).getOceny()) > Integer.parseInt(actual.getCena())) {
                     components.set(pom, components.get(pom - 1));
                     pom--;
                 }
@@ -471,7 +496,7 @@ public class HelloController implements Initializable {
             for (int i = 1; i < components.size(); i++) {
                 pom = i;
                 actual = components.get(i);
-                while (pom > 0 && components.get(pom - 1).getOceny() < actual.getOceny()) {
+                while (pom > 0 && Integer.parseInt(components.get(pom - 1).getOceny()) < Integer.parseInt(actual.getCena())) {
                     components.set(pom, components.get(pom - 1));
                     pom--;
                 }
@@ -485,8 +510,8 @@ public class HelloController implements Initializable {
 
     private void setChosenComponent(Komponent komponent) {
         chosenname.setText(komponent.getNazwa());
-        chosenprice.setText(Integer.toString(komponent.getCena()) + "zł");
-        obraz = new Image(getClass().getResourceAsStream(komponent.getImage()));
+        chosenprice.setText(komponent.getCena() + "zł");
+        //obraz = new Image(getClass().getResourceAsStream(komponent.getImage()));
         chosenimg.setImage(obraz);
     }
 
@@ -495,8 +520,22 @@ public class HelloController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         filtruj.getItems().addAll(opcjeFiltru);
         sortuj.getItems().addAll(opcjeSortowania);
-        components.addAll(getData());
-        filtruj.setOnAction(this::filtrowanie);
+        try {
+            components = getData();
+//            System.out.println(components.get(0).getNazwa());
+//            System.out.println(components.get(20).getNazwa());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+//            for(int i=0;i<dataConnection.getKomponent().size();i++) {
+//                components.addAll((Collection<? extends Komponent>) dataConnection.getKomponent().get(i));
+
+//        try {
+//            filtruj.setOnAction(this::filtrowanie);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
         sortuj.setOnAction(this::sortowanie);
         myListener = new MyListener() {
             @Override

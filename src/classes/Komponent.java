@@ -1,40 +1,68 @@
 package classes;
 
 public class Komponent {
-    private int cena;
-    private double oceny;
+
+    private String kompID;
+    private String marka;
     private String nazwa;
-    private String imagesrc;
+    private String cena;
+    private String oceny;
+    private String opis;
+    //private String imagesrc;
 
-    public String getImage() {
-        return imagesrc;
+    public String getKompID() {
+        return kompID;
     }
 
-    public int getCena() {
-        return cena;
-    }
-
-    public double getOceny() {
-        return oceny;
+    public String getMarka() {
+        return marka;
     }
 
     public String getNazwa() {
         return nazwa;
     }
 
-    public void setCena(int cena) {
-        this.cena = cena;
+    public String getCena() {
+        return cena;
     }
 
-    public void setOceny(double oceny) {
-        this.oceny = oceny;
+    public String getOceny() {
+        return oceny;
+    }
+
+    public String getOpis() {
+        return opis;
+    }
+
+   // public String getImagesrc() {
+//        return imagesrc;
+//    }
+
+    public void setKompID(String kompID) {
+        this.kompID = kompID;
+    }
+
+    public void setMarka(String marka) {
+        this.marka = marka;
     }
 
     public void setNazwa(String nazwa) {
         this.nazwa = nazwa;
     }
 
-    public void setImage(String imagesrc) {
-        this.imagesrc = imagesrc;
+    public void setCena(String cena) {
+        this.cena = cena;
     }
+
+    public void setOceny(String oceny) {
+        this.oceny = oceny;
+    }
+
+    public void setOpis(String opis) {
+        this.opis = opis;
+    }
+
+//    public void setImagesrc(String imagesrc) {
+//        this.imagesrc = imagesrc;
+//    }
 }

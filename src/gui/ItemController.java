@@ -31,9 +31,9 @@ public class ItemController {
         this.myListener = myListener;
         name.setText(komponent.getNazwa());
         price.setText(komponent.getCena() + "zł");
-        rate.setText(Double.toString(komponent.getOceny()));
-        Image image = new Image(getClass().getResourceAsStream(komponent.getImage()));
-        img.setImage(image);
+        rate.setText(komponent.getOceny());
+        //Image image = new Image(getClass().getResourceAsStream(komponent.getImage()));
+       // img.setImage(image);
 
     }
 

@@ -1,20 +1,30 @@
 package database;
 import java.sql.*;
+
+import classes.Komponent;
 import classes.User;
-import java.text.MessageFormat;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
 public class DataConnection {
 
     private String[] dane = new String [4];
+    private String[] kompData = new String[7];
+    private List<Komponent> components = new ArrayList<>();
+    List<List<Komponent>> listOfLists = new ArrayList<List<Komponent>>();
+    private Komponent komponent = new Komponent();
+    List<String[]> rowList = new ArrayList<String[]>();
+    private int x = 0;
 
     public DataConnection() throws ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
     }
     public void selectUsers() throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM User");
         ResultSet resultSet = preparedStatement.executeQuery();
         while(resultSet.next()){
             System.out.println(resultSet.getString("login"));
@@ -22,6 +32,7 @@ public class DataConnection {
         }
         connection.close();
     }
+
     public void insertUsers(User user) throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
         PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users (login, password, miasto, ulica, nrdomu, kodpocztowy) VALUES(?,?,?,?,?,?)");
@@ -75,11 +86,41 @@ public class DataConnection {
         return dane;
     }
 
+    public List<Komponent> getKomponent() throws SQLException{
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Komponent");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while(resultSet.next()){
+
+            Komponent kom = new Komponent();
+            kompData[0] = resultSet.getString("kompID");
+            kompData[1] = resultSet.getString("marka");
+            kompData[2] = resultSet.getString("nazwa");
+            kompData[3] = resultSet.getString("cena");
+            kompData[4] = resultSet.getString("srednia_ocen");
+            kompData[5] = resultSet.getString("opis");
+
+
+            kom.setKompID(kompData[0]);
+            kom.setMarka(kompData[1]);
+            kom.setNazwa(kompData[2]);
+            kom.setCena(kompData[3]);
+            kom.setOceny(kompData[4]);
+            kom.setOpis(kompData[5]);
+            components.add(kom);
+
+
+        }
+        connection.close();
+        //System.out.println(components);
+        return components;
+    }
 
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         DataConnection dataConnection = new DataConnection();
         dataConnection.selectUsers();
+
 
     }
 
