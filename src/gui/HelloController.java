@@ -180,6 +180,20 @@ public class HelloController implements Initializable {
         stage.show();
     }
 
+    public void switchtoSzczegoly(ActionEvent event)throws Exception {
+        //FXMLLoader fxmlLoader = FXMLLoader.load(HelloApplication.class.getResource("details.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("details.fxml"));
+        //AnchorPane anchor = fxmLoader.load();
+        Parent root = fxmlLoader.load();
+        DetailsController detailsController = fxmlLoader.getController();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        detailsController.setDetails(temp, myListener);
+        detailsController.setSpecifics(temp);
+    }
+
     public void switchtoKoszyk(ActionEvent event) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("koszyk.fxml"));
         Parent root = fxmlLoader.load();
@@ -356,62 +370,62 @@ public class HelloController implements Initializable {
         }
     }
 
-    private void setSpecifics() {
-        if (temp.getNazwa() == "Aorus Elite") {
-            PłytaGłówna temp = new PłytaGłówna();
-            temp.setMaxpamięć(64);
-            opis.setText("PŁYTA GŁÓWNA"+"\n"+"Maksymalna ilość pamięci: " + temp.getMaxpamięć() + "GB");
-        } else if (temp.getNazwa() == "1050 TI") {
-            KartaGraficzna temp = new KartaGraficzna();
-            temp.setPamięć(4);
-            opis.setText("KARTA GRAFICZNA"+"\n"+"Maksymalna ilość pamięci GPU: " + temp.getPamięć() + "GB");
-        } else if (temp.getNazwa() == "GoodRAM") {
-            RAM temp = new RAM();
-            temp.setPamięćRAM(4);
-            opis.setText("PAMIĘĆ RAM"+"\n"+"Maksymalna ilość pamięci RAM: " + temp.getPamięćRAM() + "GB");
-        } else if (temp.getNazwa() == "Radeon WX") {
-            KartaGraficzna temp = new KartaGraficzna();
-            temp.setPamięć(8);
-            opis.setText("KARTA GRAFICZNA"+"\n"+"Maksymalna ilość pamięci GPU: " + temp.getPamięć()+"GB");
-        } else if (temp.getNazwa() == "I7-10700F") {
-            Procesor temp = new Procesor();
-            temp.setLiczbaWątków(16);
-            temp.setLiczbaRdzenii(8);
-            temp.setTaktowanie(4.8);
-            opis.setText("PROCESOR"+"\n"+"Liczba rdzenii: " + temp.getLiczbaRdzenii() + "\n"
-                    + "Liczba wątków: " + temp.getLiczbaWątków() + "\n"
-                    + "Częstotliwość taktowania: " + temp.getTaktowanie() + "MHz");
-        } else if (temp.getNazwa() == "Ryzen 5") {
-            Procesor temp = new Procesor();
-            temp.setLiczbaWątków(12);
-            temp.setLiczbaRdzenii(6);
-            temp.setTaktowanie(4.4);
-            opis.setText("PROCESOR"+"\n"+"Liczba rdzenii: " + temp.getLiczbaRdzenii() + "\n"
-                    + "Liczba wątków: " + temp.getLiczbaWątków() + "\n"
-                    + "Częstotliwość taktowania: " + temp.getTaktowanie() + "MHz");
-        } else if (temp.getNazwa() == "MSI MPG") {
-            PłytaGłówna temp = new PłytaGłówna();
-            temp.setMaxpamięć(128);
-            opis.setText("PŁYTA GŁÓWNA"+"\n"+"Maksymalna ilość pamięci: " + temp.getMaxpamięć() + "GB");
-        } else if (temp.getNazwa() == "i3-10100F") {
-            Procesor temp = new Procesor();
-            temp.setLiczbaWątków(8);
-            temp.setLiczbaRdzenii(4);
-            temp.setTaktowanie(3.6);
-            opis.setText("PROCESOR"+"\n"+"Liczba rdzenii: " + temp.getLiczbaRdzenii() + "\n"
-                    + "Liczba wątków: " + temp.getLiczbaWątków() + "\n"
-                    + "Częstotliwość taktowania: " + temp.getTaktowanie() + "MHz");
-        } else if (temp.getNazwa() == "Radeon RX") {
-            KartaGraficzna temp = new KartaGraficzna();
-            temp.setPamięć(16);
-            opis.setText("KARTA GRAFICZNA"+"\n"+"Maksymalna ilość pamięci GPU: " + temp.getPamięć());
-        } else if (temp.getNazwa() == "Ram Patriot") {
-            RAM temp = new RAM();
-            temp.setPamięćRAM(8);
-            opis.setText("PAMIĘĆ RAM"+"\n"+"Maksymalna ilość pamięci RAM: " + temp.getPamięćRAM() + "GB");
-        }
-
-    }
+//    private void setSpecifics() {
+//        if (temp.getNazwa() == "Aorus Elite") {
+//            PłytaGłówna temp = new PłytaGłówna();
+//            temp.setMaxpamięć(64);
+//            opis.setText("PŁYTA GŁÓWNA"+"\n"+"Maksymalna ilość pamięci: " + temp.getMaxpamięć() + "GB");
+//        } else if (temp.getNazwa() == "1050 TI") {
+//            KartaGraficzna temp = new KartaGraficzna();
+//            temp.setPamięć(4);
+//            opis.setText("KARTA GRAFICZNA"+"\n"+"Maksymalna ilość pamięci GPU: " + temp.getPamięć() + "GB");
+//        } else if (temp.getNazwa() == "GoodRAM") {
+//            RAM temp = new RAM();
+//            temp.setPamięćRAM(4);
+//            opis.setText("PAMIĘĆ RAM"+"\n"+"Maksymalna ilość pamięci RAM: " + temp.getPamięćRAM() + "GB");
+//        } else if (temp.getNazwa() == "Radeon WX") {
+//            KartaGraficzna temp = new KartaGraficzna();
+//            temp.setPamięć(8);
+//            opis.setText("KARTA GRAFICZNA"+"\n"+"Maksymalna ilość pamięci GPU: " + temp.getPamięć()+"GB");
+//        } else if (temp.getNazwa() == "I7-10700F") {
+//            Procesor temp = new Procesor();
+//            temp.setLiczbaWątków(16);
+//            temp.setLiczbaRdzenii(8);
+//            temp.setTaktowanie(4.8);
+//            opis.setText("PROCESOR"+"\n"+"Liczba rdzenii: " + temp.getLiczbaRdzenii() + "\n"
+//                    + "Liczba wątków: " + temp.getLiczbaWątków() + "\n"
+//                    + "Częstotliwość taktowania: " + temp.getTaktowanie() + "MHz");
+//        } else if (temp.getNazwa() == "Ryzen 5") {
+//            Procesor temp = new Procesor();
+//            temp.setLiczbaWątków(12);
+//            temp.setLiczbaRdzenii(6);
+//            temp.setTaktowanie(4.4);
+//            opis.setText("PROCESOR"+"\n"+"Liczba rdzenii: " + temp.getLiczbaRdzenii() + "\n"
+//                    + "Liczba wątków: " + temp.getLiczbaWątków() + "\n"
+//                    + "Częstotliwość taktowania: " + temp.getTaktowanie() + "MHz");
+//        } else if (temp.getNazwa() == "MSI MPG") {
+//            PłytaGłówna temp = new PłytaGłówna();
+//            temp.setMaxpamięć(128);
+//            opis.setText("PŁYTA GŁÓWNA"+"\n"+"Maksymalna ilość pamięci: " + temp.getMaxpamięć() + "GB");
+//        } else if (temp.getNazwa() == "i3-10100F") {
+//            Procesor temp = new Procesor();
+//            temp.setLiczbaWątków(8);
+//            temp.setLiczbaRdzenii(4);
+//            temp.setTaktowanie(3.6);
+//            opis.setText("PROCESOR"+"\n"+"Liczba rdzenii: " + temp.getLiczbaRdzenii() + "\n"
+//                    + "Liczba wątków: " + temp.getLiczbaWątków() + "\n"
+//                    + "Częstotliwość taktowania: " + temp.getTaktowanie() + "MHz");
+//        } else if (temp.getNazwa() == "Radeon RX") {
+//            KartaGraficzna temp = new KartaGraficzna();
+//            temp.setPamięć(16);
+//            opis.setText("KARTA GRAFICZNA"+"\n"+"Maksymalna ilość pamięci GPU: " + temp.getPamięć());
+//        } else if (temp.getNazwa() == "Ram Patriot") {
+//            RAM temp = new RAM();
+//            temp.setPamięćRAM(8);
+//            opis.setText("PAMIĘĆ RAM"+"\n"+"Maksymalna ilość pamięci RAM: " + temp.getPamięćRAM() + "GB");
+//        }
+//
+//    }
 
     private void sortowanie(ActionEvent event) {
         if (sortuj.getValue() == "ROSNĄCO: po cenie") {
@@ -489,7 +503,7 @@ public class HelloController implements Initializable {
             public void onClickListener(Komponent komponent) {
                 setChosenComponent(komponent);
                 temp = komponent;
-                setSpecifics();
+                //setSpecifics();
             };
 
 
