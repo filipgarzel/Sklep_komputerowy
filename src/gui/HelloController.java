@@ -26,9 +26,6 @@ public class HelloController implements Initializable {
     private Label logged;
 
     @FXML
-    private TextArea opis;
-
-    @FXML
     private TextField haslo;
 
     @FXML
@@ -387,12 +384,6 @@ public class HelloController implements Initializable {
     private List<Komponent> getData() throws SQLException {
         int x = 0;
         List<Komponent> components2 = new ArrayList<>();
-//        System.out.println("data size:");
-//        System.out.println(dataConnection.getKomponent().size());
-        //System.out.println(size);
-        //components2.add(dataConnection.getKomponent().get(0));
-        //System.out.println(dataConnection.getKomponent().get(0).getNazwa());
-        //System.out.println(dataConnection.getKomponent().get(1).getNazwa());
 
         for(int i=0; i<size; i++){
             if (dataConnection.getKomponent().get(i).getNazwa().equals(dataConnection.getKomponent().get(i+1).getNazwa())){
@@ -433,36 +424,6 @@ public class HelloController implements Initializable {
             e.printStackTrace();
         }
     }
-
-
-//            temp.setLiczbaRdzenii(6);
-//            temp.setTaktowanie(4.4);
-//            opis.setText("PROCESOR"+"\n"+"Liczba rdzenii: " + temp.getLiczbaRdzenii() + "\n"
-//                    + "Liczba wątków: " + temp.getLiczbaWątków() + "\n"
-//                    + "Częstotliwość taktowania: " + temp.getTaktowanie() + "MHz");
-//        } else if (temp.getNazwa() == "MSI MPG") {
-//            PłytaGłówna temp = new PłytaGłówna();
-//            temp.setMaxpamięć(128);
-//            opis.setText("PŁYTA GŁÓWNA"+"\n"+"Maksymalna ilość pamięci: " + temp.getMaxpamięć() + "GB");
-//        } else if (temp.getNazwa() == "i3-10100F") {
-//            Procesor temp = new Procesor();
-//            temp.setLiczbaWątków(8);
-//            temp.setLiczbaRdzenii(4);
-//            temp.setTaktowanie(3.6);
-//            opis.setText("PROCESOR"+"\n"+"Liczba rdzenii: " + temp.getLiczbaRdzenii() + "\n"
-//                    + "Liczba wątków: " + temp.getLiczbaWątków() + "\n"
-//                    + "Częstotliwość taktowania: " + temp.getTaktowanie() + "MHz");
-//        } else if (temp.getNazwa() == "Radeon RX") {
-//            KartaGraficzna temp = new KartaGraficzna();
-//            temp.setPamięć(16);
-//            opis.setText("KARTA GRAFICZNA"+"\n"+"Maksymalna ilość pamięci GPU: " + temp.getPamięć());
-//        } else if (temp.getNazwa() == "Ram Patriot") {
-//            RAM temp = new RAM();
-//            temp.setPamięćRAM(8);
-//            opis.setText("PAMIĘĆ RAM"+"\n"+"Maksymalna ilość pamięci RAM: " + temp.getPamięćRAM() + "GB");
-//        }
-//
-//    }
 
     private void sortowanie(ActionEvent event) {
         if (sortuj.getValue() == "ROSNĄCO: po cenie") {
@@ -532,20 +493,9 @@ public class HelloController implements Initializable {
         sortuj.getItems().addAll(opcjeSortowania);
         try {
             components = getData();
-//            System.out.println(components.get(0).getNazwa());
-//            System.out.println(components.get(20).getNazwa());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-//            for(int i=0;i<dataConnection.getKomponent().size();i++) {
-//                components.addAll((Collection<? extends Komponent>) dataConnection.getKomponent().get(i));
-
-//        try {
-//            filtruj.setOnAction(this::filtrowanie);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
         filtruj.setOnAction(this::filtrowanie);
         sortuj.setOnAction(this::sortowanie);
         myListener = new MyListener() {
@@ -553,7 +503,6 @@ public class HelloController implements Initializable {
             public void onClickListener(Komponent komponent) {
                 setChosenComponent(komponent);
                 temp = komponent;
-                //setSpecifics();
             };
 
 
