@@ -20,5 +20,6 @@
             <Font name="Cambria Bold" size="12.0" />
          </font></Label>
       <Button layoutX="505.0" layoutY="10.0" mnemonicParsing="false" onAction="#switchtoZarejestruj" text="Zarejestruj się" />
+      <Button layoutX="50.0" layoutY="10.0" mnemonicParsing="false" text="Profil" />
    </children>
 </AnchorPane>

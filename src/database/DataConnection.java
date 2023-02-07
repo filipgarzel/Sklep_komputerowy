@@ -30,38 +30,39 @@ public class DataConnection {
 
 
     public DataConnection() throws ClassNotFoundException {
-        Class.forName("org.sqlite.JDBC");
+        Class.forName("com.mysql.cj.jdbc.Driver");
     }
     public void selectUsers() throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM User");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM myuser");
         ResultSet resultSet = preparedStatement.executeQuery();
         while(resultSet.next()){
-            System.out.println(resultSet.getString("login"));
-            System.out.println(resultSet.getString("password"));
+            System.out.println(resultSet.getString("email"));
+            System.out.println(resultSet.getString("haslo"));
         }
         connection.close();
     }
 
     public void insertUsers(User user) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users (login, password, miasto, ulica, nrdomu, kodpocztowy) VALUES(?,?,?,?,?,?)");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO myuser (email, haslo, miasto, ulica, nr_domu, kod_pocztowy, saldo) VALUES(?,?,?,?,?,?,?)");
         preparedStatement.setString(1, user.getEmail());
         preparedStatement.setString(2, user.getHasło());
         preparedStatement.setString(3, user.getMiasto());
         preparedStatement.setString(4, user.getUlica());
         preparedStatement.setInt(5, user.getNrDomu());
         preparedStatement.setInt(6, user.getKodPocztowy());
+        preparedStatement.setInt(7, 2000);
         preparedStatement.executeUpdate();
         connection.close();
     }
     private static boolean porównaj;
     public boolean logging(String mail, String hasło) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM myuser");
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            if (Objects.equals(resultSet.getString("login"),mail) && Objects.equals(resultSet.getString("password"),hasło)){
+            if (Objects.equals(resultSet.getString("email"),mail) && Objects.equals(resultSet.getString("haslo"),hasło)){
                 porównaj = true;
                 break;
             }else{
@@ -74,16 +75,16 @@ public class DataConnection {
     }
 
     public String[] getAdres(String mail) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM myuser");
         ResultSet resultSet = preparedStatement.executeQuery();
         while(resultSet.next()){
-            if (Objects.equals(resultSet.getString("login"),mail)){
+            if (Objects.equals(resultSet.getString("email"),mail)){
                 //resultSet.getString("miasto");
                 dane[0] =resultSet.getString("miasto");
                 dane[1] =resultSet.getString("ulica");
-                dane[2] =resultSet.getString("nrdomu");
-                dane[3] =resultSet.getString("kodpocztowy");
+                dane[2] =resultSet.getString("nr_domu");
+                dane[3] =resultSet.getString("kod_pocztowy");
                 break;
             }else{
                 dane[0] ="brak danych";
@@ -97,8 +98,8 @@ public class DataConnection {
     }
 
     public List<Komponent> getKomponent() throws SQLException{
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Komponent");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM komponent");
         ResultSet resultSet = preparedStatement.executeQuery();
         while(resultSet.next()){
             Komponent kom = new Komponent();
@@ -127,8 +128,8 @@ public class DataConnection {
     }
 
     public List<Procesor> getProcesory() throws SQLException{
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Procesory");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM procesory");
         ResultSet resultSet = preparedStatement.executeQuery();
         while(resultSet.next()){
             Procesor pro = new Procesor();
@@ -149,8 +150,8 @@ public class DataConnection {
     }
 
     public List<KartaGraficzna> getKarty() throws SQLException{
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Karty");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM karty");
         ResultSet resultSet = preparedStatement.executeQuery();
         while(resultSet.next()){
             KartaGraficzna karta = new KartaGraficzna();
@@ -171,8 +172,8 @@ public class DataConnection {
     }
 
     public List<PłytaGłówna> getPlyty() throws SQLException{
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Plyty");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM plyty");
         ResultSet resultSet = preparedStatement.executeQuery();
         while(resultSet.next()){
             PłytaGłówna plyta = new PłytaGłówna();
@@ -190,8 +191,8 @@ public class DataConnection {
     }
 
     public List<Zasilacz> getZasilacze() throws SQLException{
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Zasilacze");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM zasilacze");
         ResultSet resultSet = preparedStatement.executeQuery();
         while(resultSet.next()){
             Zasilacz zasilacz = new Zasilacz();
@@ -219,8 +220,8 @@ public class DataConnection {
     }
 
     public List<RAM> getRAM() throws SQLException{
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM RAM");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM ram");
         ResultSet resultSet = preparedStatement.executeQuery();
         while(resultSet.next()){
             RAM ram = new RAM();
@@ -250,8 +251,8 @@ public class DataConnection {
 
     public void addRating(String x, String productName) throws SQLException {
         System.out.println("wywolanie add rating");
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
-        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Komponent SET srednia_ocen= ? WHERE nazwa= '" +productName + "'");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE komponent SET srednia_ocen= ? WHERE nazwa= '" +productName + "'");
         preparedStatement.setString(1, x);
         marks.add(Integer.valueOf(x));
         preparedStatement.executeUpdate();
@@ -261,7 +262,7 @@ public class DataConnection {
     public void calcRating(String x, String productName) throws SQLException {
         System.out.println("wywolanie calc rating");
         marks.add(Integer.valueOf(x));
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
         PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Komponent SET srednia_ocen= ? WHERE nazwa= '" +productName + "'");
         OptionalDouble average = marks
                 .stream()
