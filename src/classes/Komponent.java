@@ -9,7 +9,6 @@ public class Komponent {
     private String oceny;
     private String opis;
     private int ilosc;
-    //private String imagesrc;
 
     public String getKompID() {
         return kompID;
@@ -39,10 +38,6 @@ public class Komponent {
         return ilosc;
     }
 
-   // public String getImagesrc() {
-//        return imagesrc;
-//    }
-
     public void setKompID(String kompID) {
         this.kompID = kompID;
     }
@@ -69,7 +64,4 @@ public class Komponent {
 
     public void setIlosc(int ilosc){this.ilosc = ilosc;}
 
-//    public void setImagesrc(String imagesrc) {
-//        this.imagesrc = imagesrc;
-//    }
 }

@@ -3,16 +3,12 @@ package gui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import classes.Komponent;
 
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 
 public class ItemController {
-    @FXML
-    private ImageView img;
 
     @FXML
     private Label name;
@@ -32,8 +28,6 @@ public class ItemController {
         name.setText(komponent.getNazwa());
         price.setText(komponent.getCena() + "zł");
         rate.setText(komponent.getOceny());
-        //Image image = new Image(getClass().getResourceAsStream(komponent.getImage()));
-       // img.setImage(image);
 
     }
 

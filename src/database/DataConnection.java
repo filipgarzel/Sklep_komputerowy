@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.OptionalDouble;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 
 public class DataConnection {
@@ -280,7 +282,6 @@ public class DataConnection {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         DataConnection dataConnection = new DataConnection();
         dataConnection.selectUsers();
-        System.out.println(dataConnection.getKomponent().get(0).getNazwa());
 
     }
 

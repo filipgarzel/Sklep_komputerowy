@@ -10,8 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -49,9 +47,6 @@ public class HelloController implements Initializable {
     private TextField ulica;
 
     @FXML
-    private ImageView chosenimg;
-
-    @FXML
     private Label chosenname;
 
     @FXML
@@ -79,7 +74,6 @@ public class HelloController implements Initializable {
     private Stage stage;
     private Scene scene;
     private static User usr = new User();
-    private Image obraz;
     private MyListener myListener;
     private static String maill;
     private Komponent komponent = new Komponent();
@@ -529,8 +523,6 @@ public class HelloController implements Initializable {
     private void setChosenComponent(Komponent komponent) {
         chosenname.setText(komponent.getNazwa());
         chosenprice.setText(komponent.getCena() + "zł");
-        //obraz = new Image(getClass().getResourceAsStream(komponent.getImage()));
-        chosenimg.setImage(obraz);
     }
 
 
