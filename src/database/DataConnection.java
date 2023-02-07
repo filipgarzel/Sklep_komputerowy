@@ -11,6 +11,7 @@ import java.util.OptionalDouble;
 
 public class DataConnection {
 
+    int kwota;
     private String[] dane = new String [4];
     private String[] kompData = new String[7];
     private String[] proData = new String[4];
@@ -95,6 +96,19 @@ public class DataConnection {
         }
         connection.close();
         return dane;
+    }
+
+    public int getKwota(String mail) throws SQLException{
+
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT saldo FROM myuser WHERE email = '" +mail + "'");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while(resultSet.next()) {
+            kwota = Integer.parseInt(resultSet.getString("saldo"));
+        }
+        connection.close();
+        System.out.println(kwota);
+        return kwota;
     }
 
     public List<Komponent> getKomponent() throws SQLException{

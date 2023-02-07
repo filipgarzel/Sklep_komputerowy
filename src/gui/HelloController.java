@@ -157,7 +157,7 @@ public class HelloController implements Initializable {
             usr.setZalogowany(true);
             logged.setText("Zalogowano");
             maill = wpiszmail.getText();
-            usr.setSaldo(10000);
+            usr.setSaldo(dataConnection.getKwota(maill));
         } else {
             logged.setText("Nie ma takiego użytkownika");
         }
