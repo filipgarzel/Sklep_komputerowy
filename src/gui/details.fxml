@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -20,8 +19,6 @@
             </Pane>
             <Pane prefHeight="294.0" prefWidth="607.0">
                <children>
-                  <ImageView fx:id="imageD" fitHeight="150.0" fitWidth="200.0" layoutX="72.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" />
-                  <TextArea fx:id="opis" layoutX="59.0" layoutY="45.0" prefHeight="169.0" prefWidth="495.0" promptText="Opis" />
                   <Label fx:id="priceD" layoutX="129.0" layoutY="243.0" prefHeight="17.0" prefWidth="57.0" text="1250 zł" textAlignment="CENTER">
                      <font>
                         <Font size="14.0" />
@@ -41,6 +38,10 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
+                  <Label layoutX="45.0" layoutY="44.0" prefHeight="17.0" prefWidth="42.0" text="Opis:" />
+                  <Label fx:id="opis" alignment="TOP_LEFT" layoutX="115.0" layoutY="44.0" prefHeight="65.0" prefWidth="439.0" text="Label" wrapText="true" />
+                  <Label layoutX="46.0" layoutY="115.0" prefHeight="48.0" prefWidth="69.0" text="Dane techniczne:" wrapText="true" />
+                  <Label fx:id="daneTechniczne" alignment="TOP_LEFT" layoutX="115.0" layoutY="122.0" prefHeight="97.0" prefWidth="439.0" text="Label2" wrapText="true" />
                </children>
             </Pane>
             <Pane prefHeight="48.0" prefWidth="607.0">

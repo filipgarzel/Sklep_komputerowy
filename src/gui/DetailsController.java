@@ -12,15 +12,11 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
 public class DetailsController {
-    @FXML
-    private ImageView imageD;
 
     @FXML
     private Label nameD;
@@ -35,15 +31,35 @@ public class DetailsController {
     private Label ilosc;
 
     @FXML
-    private TextArea opis;
+    private Label opis;
+
+    @FXML
+    private Label daneTechniczne;
 
     @FXML
     private ChoiceBox<String> ocen = new ChoiceBox<>();
 
-    private Komponent komponent ;
+    private Komponent komponent;
+    private Procesor procesor;
     private MyListener myListener;
     private String[] opcjeOcen = {"10", "9", "8", "7", "6", "5", "4", "3", "2", "1"};
     private DataConnection dataConnection;
+    private int size,sizeP, sizeK, sizePl, sizeZ, sizeR;
+
+    {
+        try {sizeP = dataConnection.getProcesory().size();}
+        catch (SQLException e) {e.printStackTrace();}
+        try {size = dataConnection.getKomponent().size();}
+        catch (SQLException e) {e.printStackTrace();}
+        try {sizeK = dataConnection.getKarty().size();}
+        catch (SQLException e) {e.printStackTrace();}
+        try {sizePl = dataConnection.getPlyty().size();}
+        catch (SQLException e) {e.printStackTrace();}
+        try {sizeZ = dataConnection.getZasilacze().size();}
+        catch (SQLException e) {e.printStackTrace();}
+        try {sizeR = dataConnection.getRAM().size();}
+        catch (SQLException e) {e.printStackTrace();}
+    }
 
     {
         try {
@@ -53,7 +69,7 @@ public class DetailsController {
         }
     }
 
-    public void setDetails(Komponent komponent, MyListener myListener){
+    public void setDetails(Komponent komponent, MyListener myListener) throws SQLException {
         this.komponent = komponent;
         this.myListener = myListener;
         nameD.setText(komponent.getNazwa());
@@ -62,10 +78,22 @@ public class DetailsController {
         //System.out.println("oceny " + rateD.getText());
         opis.setText(komponent.getOpis());
         ilosc.setText(String.valueOf(komponent.getIlosc()));
-        //Image image = new Image(getClass().getResourceAsStream(komponent.getImage()));
-        //imageD.setImage(image);
         ocen.getItems().addAll(opcjeOcen);
         ocen.setOnAction(this::ocenianie);
+
+        if(dataConnection.getTable(komponent.getKompID()).equals("Procesory")){
+            for(int i=0; i<sizeP; i++) {
+                if(komponent.getKompID().equals(dataConnection.getProcesory().get(i).getKompID())){
+                    procesor = dataConnection.getProcesory().get(i);
+                }
+            }
+            daneTechniczne.setText("Liczba rdzenii: " + procesor.getLiczbaRdzenii() + "\n"
+                    + "Liczba wątków: " + procesor.getLiczbaWątków() + "\n"
+                    + "Częstotliwość taktowania: " + procesor.getTaktowanie() + "MHz");
+        }
+        else if(dataConnection.getTable(komponent.getKompID()).equals("Ka")){
+
+        }
     }
 
     private void ocenianie(ActionEvent event) {

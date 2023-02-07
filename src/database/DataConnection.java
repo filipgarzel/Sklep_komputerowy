@@ -247,6 +247,16 @@ public class DataConnection {
         return ramy;
     }
 
+    public String getTable(String x) throws SQLException{
+        String tableName;
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\ComponentsStore.db");
+
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT kompID FROM RAM;");
+        tableName = String.valueOf(preparedStatement);
+        System.out.println(tableName);
+        connection.close();
+        return tableName;
+    }
 
     public void addRating(String x, String productName) throws SQLException {
         System.out.println("wywolanie add rating");
@@ -279,7 +289,7 @@ public class DataConnection {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         DataConnection dataConnection = new DataConnection();
         dataConnection.selectUsers();
-        System.out.println(dataConnection.getKomponent().get(0).getNazwa());
+        System.out.println(dataConnection.getTable("30"));
 
     }
 
