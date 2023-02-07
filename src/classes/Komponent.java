@@ -8,6 +8,7 @@ public class Komponent {
     private String cena;
     private String oceny;
     private String opis;
+    private int ilosc;
     //private String imagesrc;
 
     public String getKompID() {
@@ -32,6 +33,10 @@ public class Komponent {
 
     public String getOpis() {
         return opis;
+    }
+
+    public int getIlosc() {
+        return ilosc;
     }
 
    // public String getImagesrc() {
@@ -61,6 +66,8 @@ public class Komponent {
     public void setOpis(String opis) {
         this.opis = opis;
     }
+
+    public void setIlosc(int ilosc){this.ilosc = ilosc;}
 
 //    public void setImagesrc(String imagesrc) {
 //        this.imagesrc = imagesrc;

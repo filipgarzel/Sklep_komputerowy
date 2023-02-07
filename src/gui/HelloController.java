@@ -16,6 +16,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -85,9 +86,26 @@ public class HelloController implements Initializable {
     private Komponent temp;
     private List<Komponent> components = new ArrayList<>();
     private List<Komponent> wKoszyku = new ArrayList<>();
-    private String[] opcjeFiltru = {"Procesory", "Karty graficzne", "Płyty główne", "RAM", ""};
+    private String[] opcjeFiltru = {"Procesory", "Karty graficzne", "Płyty główne", "Zasilacze", "RAM", "All"};
     private String[] opcjeSortowania = {"ROSNĄCO: po cenie", "MALEJĄCO: po cenie", "ROSNĄCO: po ocenach", "MALEJĄCO: po ocenach", ""};
     private DataConnection dataConnection = new DataConnection();
+    private int size,sizeP, sizeK, sizePl, sizeZ, sizeR;
+
+    {
+        try {sizeP = dataConnection.getProcesory().size();}
+        catch (SQLException e) {e.printStackTrace();}
+        try {size = dataConnection.getKomponent().size();}
+        catch (SQLException e) {e.printStackTrace();}
+        try {sizeK = dataConnection.getKarty().size();}
+        catch (SQLException e) {e.printStackTrace();}
+        try {sizePl = dataConnection.getPlyty().size();}
+        catch (SQLException e) {e.printStackTrace();}
+        try {sizeZ = dataConnection.getZasilacze().size();}
+        catch (SQLException e) {e.printStackTrace();}
+        try {sizeR = dataConnection.getRAM().size();}
+        catch (SQLException e) {e.printStackTrace();}
+    }
+
 
 
     public HelloController() throws ClassNotFoundException {
@@ -217,158 +235,185 @@ public class HelloController implements Initializable {
     }
 
 
-    public void filtrowanie(ActionEvent event) throws SQLException {
+    public void filtrowanie(ActionEvent event)  {
         if (filtruj.getValue() == "Procesory") {
+            int x = 0;
+            int array[] = new int[sizeP];
             components.clear();
-            components.addAll(getData());
-            for (int i = 0; i < components.size(); i++) {
-                if (components.get(i) instanceof Procesor == false) {
-                    components.remove(i);
-                    i -= 1;
-                }
+            for(int i=0; i<sizeP; i++) {
+                try {
+                    array[i] = Integer.parseInt(dataConnection.getProcesory().get(i).getKompID());
+                } catch (SQLException e) {e.printStackTrace();}
+            }
+            for(int i=0; i<sizeP; i++) {
+                try {
+                    if (dataConnection.getKomponent().get(i).getKompID().equals(String.valueOf(array[i]))) {
+                        if (dataConnection.getKomponent().get(i).getNazwa().equals(dataConnection.getKomponent().get(i+1).getNazwa())){
+                            x += 1;
+                            continue;
+                        }
+                        else{
+                            int occurrences = x+1;
+                            dataConnection.getKomponent().get(i).setIlosc(occurrences);
+                            components.add(dataConnection.getKomponent().get(i));
+                            x = 0;
+                        }
+                    }
+                } catch (SQLException e) {e.printStackTrace();}
             }
             loadGrid(components, mygrid);
-        } else if (filtruj.getValue() == "Karty graficzne") {
+        }
+
+
+        else if (filtruj.getValue() == "Karty graficzne") {
+            int x = 0;
+            int array[] = new int[sizeK];
             components.clear();
-            components.addAll(getData());
-            for (int i = 0; i < components.size(); i++) {
-                if (components.get(i) instanceof KartaGraficzna == false) {
-                    components.remove(i);
-                    i -= 1;
-                }
+            for(int i=0; i<sizeK; i++) {
+                try {
+                    array[i] = Integer.parseInt(dataConnection.getKarty().get(i).getKompID());
+                } catch (SQLException e) {e.printStackTrace();}
+            }
+            for(int i=sizeP; i<sizeP+sizeK; i++) {
+                try {
+                    if (dataConnection.getKomponent().get(i).getKompID().equals(String.valueOf(array[i-sizeP]))) {
+                        if (dataConnection.getKomponent().get(i).getNazwa().equals(dataConnection.getKomponent().get(i+1).getNazwa())){
+                            x += 1;
+                            continue;
+                        }
+                        else {
+                            int occurrences = x + 1;
+                            dataConnection.getKomponent().get(i).setIlosc(occurrences);
+                            components.add(dataConnection.getKomponent().get(i));
+                            x = 0;
+                        }
+                    }
+                } catch (SQLException e) {e.printStackTrace();}
             }
             loadGrid(components, mygrid);
-        } else if (filtruj.getValue() == "Płyty główne") {
+        }
+
+
+        else if (filtruj.getValue() == "Płyty główne") {
+            int x = 0;
+            int array[] = new int[sizePl];
             components.clear();
-            components.addAll(getData());
-            for (int i = 0; i < components.size(); i++) {
-                if (components.get(i) instanceof PłytaGłówna == false) {
-                    components.remove(i);
-                    i -= 1;
-                }
+            for(int i=0; i<sizePl; i++) {
+                try {
+                    array[i] = Integer.parseInt(dataConnection.getPlyty().get(i).getKompID());
+                } catch (SQLException e) {e.printStackTrace();}
+            }
+            for(int i=sizeP+sizeK; i<sizeP+sizeK+sizePl; i++) {
+                try {
+                    if (dataConnection.getKomponent().get(i).getKompID().equals(String.valueOf(array[i-sizeP-sizeK]))) {
+                        if (dataConnection.getKomponent().get(i).getNazwa().equals(dataConnection.getKomponent().get(i+1).getNazwa())){
+                            x += 1;
+                            continue;
+                        }
+                        else {
+                            int occurrences = x + 1;
+                            dataConnection.getKomponent().get(i).setIlosc(occurrences);
+                            components.add(dataConnection.getKomponent().get(i));
+                            x = 0;
+                        }
+                    }
+                } catch (SQLException e) {e.printStackTrace();}
             }
             loadGrid(components, mygrid);
-        } else if (filtruj.getValue() == "RAM") {
+        }
+
+        else if (filtruj.getValue() == "Zasilacze") {
+            int x = 0;
+            int array[] = new int[sizeZ];
             components.clear();
-            components.addAll(getData());
-            for (int i = 0; i < components.size(); i++) {
-                if (components.get(i) instanceof RAM == false) {
-                    components.remove(i);
-                    i -= 1;
-                }
+            for(int i=0; i<sizeZ; i++) {
+                try {
+                    array[i] = Integer.parseInt(dataConnection.getZasilacze().get(i).getKompID());
+                } catch (SQLException e) {e.printStackTrace();}
+            }
+            for(int i=sizeP+sizeK+sizePl; i<sizeP+sizeK+sizePl+sizeZ; i++) {
+                try {
+                    if (dataConnection.getKomponent().get(i).getKompID().equals(String.valueOf(array[i-sizeP-sizeK-sizePl]))) {
+                        if (dataConnection.getKomponent().get(i).getNazwa().equals(dataConnection.getKomponent().get(i+1).getNazwa())){
+                            x += 1;
+                            continue;
+                        }
+                        else {
+                            int occurrences = x + 1;
+                            dataConnection.getKomponent().get(i).setIlosc(occurrences);
+                            components.add(dataConnection.getKomponent().get(i));
+                            x = 0;
+                        }
+                    }
+                } catch (SQLException e) {e.printStackTrace();}
             }
             loadGrid(components, mygrid);
-        } else {
+        }
+
+        else if (filtruj.getValue() == "RAM") {
+            int x = 0;
+            int array[] = new int[sizeR];
             components.clear();
-//            for(int i=0; i<dataConnection.getKomponent().size();i++){
-//                components.addAll(dataConnection.getKomponent().get(i));
-//            }
-            components.addAll(getData());
+            for(int i=0; i<sizeR; i++) {
+                try {
+                    array[i] = Integer.parseInt(dataConnection.getRAM().get(i).getKompID());
+                } catch (SQLException e) {e.printStackTrace();}
+            }
+            for(int i=sizeP+sizeK+sizePl+sizeZ; i<sizeP+sizeK+sizePl+sizeZ+sizeR; i++) {
+                try {
+                    if (dataConnection.getKomponent().get(i).getKompID().equals(String.valueOf(array[i-sizeP-sizeK-sizePl-sizeZ]))) {
+                        if (dataConnection.getKomponent().get(i).getNazwa().equals(dataConnection.getKomponent().get(i+1).getNazwa())){
+                            x += 1;
+                            continue;
+                        }
+                        else {
+                            int occurrences = x + 1;
+                            dataConnection.getKomponent().get(i).setIlosc(occurrences);
+                            components.add(dataConnection.getKomponent().get(i));
+                            x = 0;
+                        }
+                    }
+                } catch (SQLException e) {e.printStackTrace();}
+            }
+            loadGrid(components, mygrid);
+        }
+
+        else {
+            components.clear();
+            try {
+                components.addAll(getData());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             loadGrid(components, mygrid);
         }
     }
 
 
     private List<Komponent> getData() throws SQLException {
-
+        int x = 0;
         List<Komponent> components2 = new ArrayList<>();
 //        System.out.println("data size:");
 //        System.out.println(dataConnection.getKomponent().size());
-        components2 = dataConnection.getKomponent();
-       // System.out.println(dataConnection.getKomponent().get(0));
+        //System.out.println(size);
+        //components2.add(dataConnection.getKomponent().get(0));
+        //System.out.println(dataConnection.getKomponent().get(0).getNazwa());
+        //System.out.println(dataConnection.getKomponent().get(1).getNazwa());
 
-//        for(int i=10; i<159; i++){
-//            komponent.setKompID(dataConnection.getKomponent().get(i)[0]);
-//            komponent.setMarka(dataConnection.getKomponent().get(i)[1]);
-//            komponent.setNazwa(dataConnection.getKomponent().get(i)[2]);
-//            komponent.setCena(dataConnection.getKomponent().get(i)[3]);
-//            komponent.setOceny(dataConnection.getKomponent().get(i)[4]);
-//            komponent.setOpis(dataConnection.getKomponent().get(i)[5]);
-//            components2.add(komponent);
-//            System.out.println(komponent);
-//        }
-
-//        while( i<168){
-//            komponent.setKompID(dataConnection.getKomponent(i)[0]);
-//            komponent.setMarka(dataConnection.getKomponent(i)[1]);
-//            komponent.setNazwa(dataConnection.getKomponent(i)[2]);
-//            komponent.setCena(dataConnection.getKomponent(i)[3]);
-//            komponent.setOceny(dataConnection.getKomponent(i)[4]);
-//            komponent.setOpis(dataConnection.getKomponent(i)[5]);
-//            components.add(komponent);
-//            i += 1;
-//        }
-
-
-//        komponent = new PłytaGłówna();
-//        komponent.setNazwa("Aorus Elite");
-//        komponent.setCena(400);
-//        komponent.setImage("img/gigaabyte.jpg");
-//        komponent.setOceny(7.9);
-//        components.add(komponent);
-//
-//        komponent = new KartaGraficzna();
-//        komponent.setNazwa("1050 TI");
-//        komponent.setCena(1350);
-//        komponent.setImage("img/1050ti.jpg");
-//        komponent.setOceny(6.5);
-//        components.add(komponent);
-//
-//        komponent = new RAM();
-//        komponent.setNazwa("GoodRAM");
-//        komponent.setCena(75);
-//        komponent.setImage("img/goodram.jpg");
-//        komponent.setOceny(7.7);
-//        components.add(komponent);
-//
-//        komponent = new KartaGraficzna();
-//        komponent.setNazwa("Radeon WX");
-//        komponent.setCena(800);
-//        komponent.setImage("img/amdradeonpro.jpg");
-//        komponent.setOceny(7.1);
-//        components.add(komponent);
-//
-//        komponent = new Procesor();
-//        komponent.setNazwa("I7-10700F");
-//        komponent.setCena(1200);
-//        komponent.setImage("img/procesori7.jpg");
-//        komponent.setOceny(8.5);
-//        components.add(komponent);
-//
-//        komponent = new Procesor();
-//        komponent.setNazwa("Ryzen 5");
-//        komponent.setCena(1400);
-//        komponent.setImage("img/amdprocesor.jpg");
-//        komponent.setOceny(8.1);
-//        components.add(komponent);
-//
-//        komponent = new PłytaGłówna();
-//        komponent.setNazwa("MSI MPG");
-//        komponent.setCena(1000);
-//        komponent.setImage("img/msi.jpg");
-//        komponent.setOceny(9.0);
-//        components.add(komponent);
-//
-//        komponent = new Procesor();
-//        komponent.setNazwa("i3-10100F");
-//        komponent.setCena(350);
-//        komponent.setImage("img/i3procesor.jpg");
-//        komponent.setOceny(7.0);
-//        components.add(komponent);
-//
-//        komponent = new KartaGraficzna();
-//        komponent.setNazwa("Radeon RX");
-//        komponent.setCena(10000);
-//        komponent.setImage("img/asus.jpg");
-//        komponent.setOceny(9.5);
-//        components.add(komponent);
-//
-//        komponent = new RAM();
-//        komponent.setNazwa("Ram Patriot");
-//        komponent.setCena(250);
-//        komponent.setImage("img/patriotram.jpg");
-//        komponent.setOceny(8.3);
-//        components.add(komponent);
+        for(int i=0; i<size; i++){
+            if (dataConnection.getKomponent().get(i).getNazwa().equals(dataConnection.getKomponent().get(i+1).getNazwa())){
+                x += 1;
+                continue;
+            }
+            else{
+                int occurrences = x+1;
+                //System.out.println("occurrences: " + x);
+                dataConnection.getKomponent().get(i).setIlosc(occurrences);
+                //System.out.println(dataConnection.getKomponent().get(i).getIlosc());
+                components2.add(dataConnection.getKomponent().get(i));
+                x = 0;
+            }
+        }
 
         return components2;
     }
@@ -395,34 +440,7 @@ public class HelloController implements Initializable {
         }
     }
 
-//    private void setSpecifics() {
-//        if (temp.getNazwa() == "Aorus Elite") {
-//            PłytaGłówna temp = new PłytaGłówna();
-//            temp.setMaxpamięć(64);
-//            opis.setText("PŁYTA GŁÓWNA"+"\n"+"Maksymalna ilość pamięci: " + temp.getMaxpamięć() + "GB");
-//        } else if (temp.getNazwa() == "1050 TI") {
-//            KartaGraficzna temp = new KartaGraficzna();
-//            temp.setPamięć(4);
-//            opis.setText("KARTA GRAFICZNA"+"\n"+"Maksymalna ilość pamięci GPU: " + temp.getPamięć() + "GB");
-//        } else if (temp.getNazwa() == "GoodRAM") {
-//            RAM temp = new RAM();
-//            temp.setPamięćRAM(4);
-//            opis.setText("PAMIĘĆ RAM"+"\n"+"Maksymalna ilość pamięci RAM: " + temp.getPamięćRAM() + "GB");
-//        } else if (temp.getNazwa() == "Radeon WX") {
-//            KartaGraficzna temp = new KartaGraficzna();
-//            temp.setPamięć(8);
-//            opis.setText("KARTA GRAFICZNA"+"\n"+"Maksymalna ilość pamięci GPU: " + temp.getPamięć()+"GB");
-//        } else if (temp.getNazwa() == "I7-10700F") {
-//            Procesor temp = new Procesor();
-//            temp.setLiczbaWątków(16);
-//            temp.setLiczbaRdzenii(8);
-//            temp.setTaktowanie(4.8);
-//            opis.setText("PROCESOR"+"\n"+"Liczba rdzenii: " + temp.getLiczbaRdzenii() + "\n"
-//                    + "Liczba wątków: " + temp.getLiczbaWątków() + "\n"
-//                    + "Częstotliwość taktowania: " + temp.getTaktowanie() + "MHz");
-//        } else if (temp.getNazwa() == "Ryzen 5") {
-//            Procesor temp = new Procesor();
-//            temp.setLiczbaWątków(12);
+
 //            temp.setLiczbaRdzenii(6);
 //            temp.setTaktowanie(4.4);
 //            opis.setText("PROCESOR"+"\n"+"Liczba rdzenii: " + temp.getLiczbaRdzenii() + "\n"
@@ -536,6 +554,7 @@ public class HelloController implements Initializable {
 //        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }
+        filtruj.setOnAction(this::filtrowanie);
         sortuj.setOnAction(this::sortowanie);
         myListener = new MyListener() {
             @Override

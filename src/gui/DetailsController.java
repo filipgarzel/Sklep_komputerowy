@@ -1,6 +1,7 @@
 package gui;
 
 import classes.*;
+import database.DataConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 
 public class DetailsController {
     @FXML
@@ -29,6 +32,9 @@ public class DetailsController {
     private Label rateD;
 
     @FXML
+    private Label ilosc;
+
+    @FXML
     private TextArea opis;
 
     @FXML
@@ -37,7 +43,15 @@ public class DetailsController {
     private Komponent komponent ;
     private MyListener myListener;
     private String[] opcjeOcen = {"10", "9", "8", "7", "6", "5", "4", "3", "2", "1"};
+    private DataConnection dataConnection;
 
+    {
+        try {
+            dataConnection = new DataConnection();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void setDetails(Komponent komponent, MyListener myListener){
         this.komponent = komponent;
@@ -45,67 +59,35 @@ public class DetailsController {
         nameD.setText(komponent.getNazwa());
         priceD.setText(komponent.getCena() + "zł");
         rateD.setText(komponent.getOceny());
+        //System.out.println("oceny " + rateD.getText());
         opis.setText(komponent.getOpis());
+        ilosc.setText(String.valueOf(komponent.getIlosc()));
         //Image image = new Image(getClass().getResourceAsStream(komponent.getImage()));
         //imageD.setImage(image);
         ocen.getItems().addAll(opcjeOcen);
+        ocen.setOnAction(this::ocenianie);
     }
 
-//    public void setSpecifics(Komponent komponent) {
-//        if (komponent.getNazwa() == "Aorus Elite") {
-//            PłytaGłówna temp = new PłytaGłówna();
-//            temp.setMaxpamięć(64);
-//            opis.setText("PŁYTA GŁÓWNA"+"\n"+"Maksymalna ilość pamięci: " + temp.getMaxpamięć() + "GB");
-//        } else if (komponent.getNazwa() == "1050 TI") {
-//            KartaGraficzna temp = new KartaGraficzna();
-//            temp.setPamięć(4);
-//            opis.setText("KARTA GRAFICZNA"+"\n"+"Maksymalna ilość pamięci GPU: " + temp.getPamięć() + "GB");
-//        } else if (komponent.getNazwa() == "GoodRAM") {
-//            RAM temp = new RAM();
-//            temp.setPamięćRAM(4);
-//            opis.setText("PAMIĘĆ RAM"+"\n"+"Maksymalna ilość pamięci RAM: " + temp.getPamięćRAM() + "GB");
-//        } else if (komponent.getNazwa() == "Radeon WX") {
-//            KartaGraficzna temp = new KartaGraficzna();
-//            temp.setPamięć(8);
-//            opis.setText("KARTA GRAFICZNA"+"\n"+"Maksymalna ilość pamięci GPU: " + temp.getPamięć()+"GB");
-//        } else if (komponent.getNazwa() == "I7-10700F") {
-//            Procesor temp = new Procesor();
-//            temp.setLiczbaWątków(16);
-//            temp.setLiczbaRdzenii(8);
-//            temp.setTaktowanie(4.8);
-//            opis.setText("PROCESOR"+"\n"+"Liczba rdzenii: " + temp.getLiczbaRdzenii() + "\n"
-//                    + "Liczba wątków: " + temp.getLiczbaWątków() + "\n"
-//                    + "Częstotliwość taktowania: " + temp.getTaktowanie() + "MHz");
-//        } else if (komponent.getNazwa() == "Ryzen 5") {
-//            Procesor temp = new Procesor();
-//            temp.setLiczbaWątków(12);
-//            temp.setLiczbaRdzenii(6);
-//            temp.setTaktowanie(4.4);
-//            opis.setText("PROCESOR"+"\n"+"Liczba rdzenii: " + temp.getLiczbaRdzenii() + "\n"
-//                    + "Liczba wątków: " + temp.getLiczbaWątków() + "\n"
-//                    + "Częstotliwość taktowania: " + temp.getTaktowanie() + "MHz");
-//        } else if (komponent.getNazwa() == "MSI MPG") {
-//            PłytaGłówna temp = new PłytaGłówna();
-//            temp.setMaxpamięć(128);
-//            opis.setText("PŁYTA GŁÓWNA"+"\n"+"Maksymalna ilość pamięci: " + temp.getMaxpamięć() + "GB");
-//        } else if (komponent.getNazwa() == "i3-10100F") {
-//            Procesor temp = new Procesor();
-//            temp.setLiczbaWątków(8);
-//            temp.setLiczbaRdzenii(4);
-//            temp.setTaktowanie(3.6);
-//            opis.setText("PROCESOR"+"\n"+"Liczba rdzenii: " + temp.getLiczbaRdzenii() + "\n"
-//                    + "Liczba wątków: " + temp.getLiczbaWątków() + "\n"
-//                    + "Częstotliwość taktowania: " + temp.getTaktowanie() + "MHz");
-//        } else if (komponent.getNazwa() == "Radeon RX") {
-//            KartaGraficzna temp = new KartaGraficzna();
-//            temp.setPamięć(16);
-//            opis.setText("KARTA GRAFICZNA"+"\n"+"Maksymalna ilość pamięci GPU: " + temp.getPamięć());
-//        } else if (komponent.getNazwa() == "Ram Patriot") {
-//            RAM temp = new RAM();
-//            temp.setPamięćRAM(8);
-//            opis.setText("PAMIĘĆ RAM"+"\n"+"Maksymalna ilość pamięci RAM: " + temp.getPamięćRAM() + "GB");
-//        }
-//    }
+    private void ocenianie(ActionEvent event) {
+        if(ocen.getValue() != null){
+            if(rateD.getText() != null){
+                try {
+                    System.out.println(komponent.getNazwa());
+                    dataConnection.calcRating(ocen.getValue(), komponent.getNazwa());
+                    System.out.println("dodano ocene");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }}
+            else{
+                try {
+                    System.out.println(komponent.getNazwa());
+                    dataConnection.addRating(ocen.getValue(), komponent.getNazwa());
+                    System.out.println("dodano ocene");
+                } catch (SQLException e) {
+                    e.printStackTrace();}
+            }
+        }
+    }
 
     public void switchtoPrzegladaj(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("Przeglądaj.fxml"));
