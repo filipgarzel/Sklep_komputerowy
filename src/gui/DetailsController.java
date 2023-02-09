@@ -147,7 +147,7 @@ public class DetailsController {
             if(rateD.getText() != null){
                 try {
                     System.out.println(komponent.getNazwa());
-                    dataConnection.calcRating(ocen.getValue(), komponent.getNazwa());
+                    dataConnection.newRating(ocen.getValue(), komponent.getNazwa());
                     System.out.println("dodano ocene");
                 } catch (SQLException e) {
                     e.printStackTrace();

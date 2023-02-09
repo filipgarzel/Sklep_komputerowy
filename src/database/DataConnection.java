@@ -1,4 +1,5 @@
 package database;
+import java.math.BigDecimal;
 import java.sql.*;
 
 import classes.*;
@@ -268,26 +269,43 @@ public class DataConnection {
     public void addRating(String x, String productName) throws SQLException {
         System.out.println("wywolanie add rating");
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
-        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE komponent SET srednia_ocen= ? WHERE nazwa= '" +productName + "'");
-        preparedStatement.setString(1, x);
+        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE komponent SET suma_ocen=?,ilosc_ocen=?, srednia_ocen= ? WHERE nazwa= '" +productName + "'");
+        preparedStatement.setInt(1, Integer.parseInt(x));
+        preparedStatement.setInt(2,1);
+        preparedStatement.setBigDecimal(3, BigDecimal.valueOf(Long.parseLong(x)));
         marks.add(Integer.valueOf(x));
         preparedStatement.executeUpdate();
         connection.close();
     }
 
-    public void calcRating(String x, String productName) throws SQLException {
-        System.out.println("wywolanie calc rating");
-        marks.add(Integer.valueOf(x));
+    public void newRating(String x, String productName) throws SQLException{
+        int suma = 0, ilosc_ocen=0;
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
-        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Komponent SET srednia_ocen= ? WHERE nazwa= '" +productName + "'");
-        OptionalDouble average = marks
-                .stream()
-                .mapToDouble(a -> a)
-                .average();
-        double y = average.getAsDouble();
-        System.out.println("wszystkie oceny: " + marks);
-        System.out.println("srednia = " + y);
-        preparedStatement.setString(1, String.valueOf(y));
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT suma_ocen, ilosc_ocen FROM komponent WHERE nazwa= '" +productName + "'");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while(resultSet.next()) {
+            suma = resultSet.getInt("suma_ocen");
+            ilosc_ocen = resultSet.getInt("ilosc_ocen");
+        }
+        int newSuma = suma  + Integer.parseInt(x);
+        int newIlosc = ilosc_ocen + 1;
+        calcRating(newSuma, newIlosc, productName);
+        connection.close();
+    }
+
+
+    public void calcRating(int x, int y, String productName) throws SQLException {
+        System.out.println("wywolanie calc rating");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Komponent SET suma_ocen=?,ilosc_ocen=?,srednia_ocen= ? WHERE nazwa= '" +productName + "'");
+        float dzielenie = (float)x/y;
+        double srednia = Math.round(dzielenie*Math.pow(10, 2))
+                / Math.pow(10, 2);
+        System.out.println("dzielenie: " + dzielenie);
+        System.out.println("srednia: " + srednia);
+        preparedStatement.setInt(1, x);
+        preparedStatement.setInt(2,y);
+        preparedStatement.setDouble(3, srednia);
         preparedStatement.executeUpdate();
         connection.close();
     }
