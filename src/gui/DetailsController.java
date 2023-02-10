@@ -89,7 +89,7 @@ public class DetailsController {
         rateD.setText(komponent.getOceny());
         //System.out.println("oceny " + rateD.getText());
         opis.setText(komponent.getOpis());
-        ilosc.setText(String.valueOf(komponent.getIlosc()));
+        ilosc.setText(String.valueOf(dataConnection.getIlosc(komponent.getNazwa())));
         ocen.getItems().addAll(opcjeOcen);
         ocen.setOnAction(this::ocenianie);
 

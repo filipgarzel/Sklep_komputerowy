@@ -2,6 +2,7 @@ package gui;
 
 import classes.Komponent;
 import classes.User;
+import database.DataConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +47,10 @@ public class KoszykController {
     private int suma;
     private User usr;
     private List<Komponent> basket = new ArrayList<>();
+    DataConnection dataConnection = new DataConnection();
+
+    public KoszykController() throws ClassNotFoundException {
+    }
 
 
     public void odśwież(List<Komponent> koszyk, User usr){
@@ -63,11 +69,13 @@ public class KoszykController {
 
     }
 
-    public void kup(){
+    public void kup() throws SQLException {
         if(usr.getZalogowany()){
             if (usr.getSaldo()>=suma){
                 usr.setSaldo(usr.getSaldo()-suma);
+                dataConnection.buying(usr.getEmail(), suma, basket);
                 koszykInfo.setText("Zakupiono");
+
             }else{
                 koszykInfo.setText("Za mało środków na koncie");
             }

@@ -213,6 +213,7 @@ public class HelloController implements Initializable {
         usr.setUlica(dataConnection.getAdres(maill)[1]);
         usr.setNrDomu(Integer.parseInt(dataConnection.getAdres(maill)[2]));
         usr.setKodPocztowy(Integer.parseInt(dataConnection.getAdres(maill)[3]));
+        usr.setEmail(dataConnection.getAdres(maill)[4]);
         if (usr.getZalogowany() == true) {
             koszykController.setDane(usr.getMiasto(), usr.getUlica(), Integer.toString(usr.getNrDomu()), Integer.toString(usr.getKodPocztowy()));
         }else{
