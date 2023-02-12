@@ -361,6 +361,38 @@ public class DataConnection {
         connection.close();
     }
 
+    public List<String> Selecting(String email) throws SQLException {
+        List<String> components = new ArrayList<>();
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM myuser WHERE email = '" +email + "'");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        String usr="";
+        while(resultSet.next()){
+            usr = resultSet.getString("ID");
+
+        }
+        PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT * FROM zakupy WHERE ID = '" +usr + "'");
+        ResultSet resultSet1 = preparedStatement1.executeQuery();
+        String nazwa="";
+        String realnazwa="";
+        String cena="";
+        String line="";
+        while(resultSet1.next()){
+            nazwa = resultSet1.getString("kompID");
+            PreparedStatement preparedStatement2 = connection.prepareStatement("SELECT * FROM komponent WHERE kompID = '" +nazwa + "'");
+            ResultSet resultSet2 = preparedStatement2.executeQuery();
+            while(resultSet2.next()){
+                realnazwa = resultSet2.getString("nazwa");
+                cena = resultSet2.getString("cena");
+            }
+            line = realnazwa + "   " + cena;
+            components.add(line);
+
+        }
+        connection.close();
+        return components;
+    }
+
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         DataConnection dataConnection = new DataConnection();

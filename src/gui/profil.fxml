@@ -6,18 +6,21 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="507.0" prefWidth="664.0" stylesheets="@img/styling.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HelloController">
+<AnchorPane prefHeight="507.0" prefWidth="664.0" stylesheets="@img/styling.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProfileController">
     <children>
-        <Label fx:id="logged" alignment="CENTER" layoutX="170.0" layoutY="43.0" prefHeight="20.0" prefWidth="329.0" textAlignment="CENTER" textFill="#ff0202">
+        <Label fx:id="logged" alignment="CENTER" layoutY="43.0" prefHeight="20.0" prefWidth="664.0" textAlignment="CENTER" textFill="#ff0202">
             <font>
                 <Font size="14.0" />
             </font></Label>
         <Button layoutX="307.0" layoutY="417.0" mnemonicParsing="false" onAction="#switchtoStart" prefHeight="25.0" prefWidth="69.0" text="Powrót" />
-      <Label fx:id="usrname" layoutX="89.0" layoutY="229.0" prefHeight="50.0" prefWidth="107.0" text="halo">
+      <Label fx:id="usrname" alignment="CENTER" layoutY="18.0" prefHeight="50.0" prefWidth="664.0">
          <font>
             <Font size="34.0" />
          </font></Label>
       <ListView fx:id="mylistview" layoutX="242.0" layoutY="154.0" prefHeight="200.0" prefWidth="200.0" />
-      <Label layoutX="328.0" layoutY="117.0" text="lista" />
+      <Label layoutX="291.0" layoutY="109.0" text="Historia" textFill="#dbc563">
+         <font>
+            <Font size="25.0" />
+         </font></Label>
     </children>
 </AnchorPane>

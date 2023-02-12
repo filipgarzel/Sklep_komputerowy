@@ -68,6 +68,8 @@ public class HelloController implements Initializable {
     private ChoiceBox<String> sortuj = new ChoiceBox<>();
 
 
+
+
     private Stage stage;
     private Scene scene;
     private static User usr = new User();
@@ -75,6 +77,7 @@ public class HelloController implements Initializable {
     private static String maill;
     private Komponent komponent = new Komponent();
     private Komponent temp;
+    private List<String> brak = new ArrayList<>();
     private List<Komponent> components = new ArrayList<>();
     private List<Komponent> wKoszyku = new ArrayList<>();
     private String[] opcjeFiltru = {"Procesory", "Karty graficzne", "Płyty główne", "Zasilacze", "RAM", "All"};
@@ -160,6 +163,23 @@ public class HelloController implements Initializable {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void switchtoProfil(ActionEvent event) throws Exception {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("profil.fxml"));
+        Parent root = fxmlLoader.load();
+        ProfileController profileController = fxmlLoader.getController();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        if (usr.getZalogowany() == true) {
+            profileController.setUser(maill, dataConnection.Selecting(maill));
+            System.out.println(dataConnection.Selecting(maill));
+        }else{
+            brak.add("");
+            profileController.setUser("Niezalogowano", brak);
+        }
     }
 
     public void switchtoZaloguj(ActionEvent event) throws Exception {
