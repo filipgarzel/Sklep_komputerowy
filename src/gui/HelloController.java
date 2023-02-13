@@ -79,7 +79,7 @@ public class HelloController implements Initializable {
     private Komponent temp;
     private List<String> brak = new ArrayList<>();
     private List<Komponent> components = new ArrayList<>();
-    private List<Komponent> wKoszyku = new ArrayList<>();
+    private static List<Komponent> wKoszyku = new ArrayList<>();
     private String[] opcjeFiltru = {"Procesory", "Karty graficzne", "Płyty główne", "Zasilacze", "RAM", "All"};
     private String[] opcjeSortowania = {"ROSNĄCO: po cenie", "MALEJĄCO: po cenie", "ROSNĄCO: po ocenach", "MALEJĄCO: po ocenach", ""};
     private DataConnection dataConnection = new DataConnection();

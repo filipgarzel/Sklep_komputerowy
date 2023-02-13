@@ -57,7 +57,7 @@ public class KoszykController {
         this.usr = usr;
         basket = koszyk;
         for (int i = 0; i < koszyk.size(); i++) {
-            display += koszyk.get(i).getNazwa() + "\n ";
+            display += koszyk.get(i).getNazwa() + "\t"+ koszyk.get(i).getCena()+ " zł" + "\n ";
         }
         summary.setText(display);
         suma =0;
