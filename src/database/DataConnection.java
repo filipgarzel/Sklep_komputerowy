@@ -1,4 +1,5 @@
 package database;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.Date;
@@ -327,38 +328,45 @@ public class DataConnection {
     public void buying(String email, int suma, List<Komponent> koszyk) throws SQLException {
         Date date = new Date();
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
-        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE myuser SET saldo = saldo - '" +suma + "'");
-        preparedStatement.executeUpdate();
 
-        for (int i=0; i<koszyk.size();i++){
-            PreparedStatement helper1 = connection.prepareStatement("SELECT kompID from komponent where status = 0 and nazwa = '" +koszyk.get(i).getNazwa() + "' LIMIT 1");
-            ResultSet resultSet1 = helper1.executeQuery();
-            int idik=0;
-            if (resultSet1.next()) {
-                idik = resultSet1.getInt("kompID");
+        try {
+            connection.setAutoCommit(false);
+            for (int i = 0; i < koszyk.size(); i++) {
+                PreparedStatement helper1 = connection.prepareStatement("SELECT kompID from komponent where status = 0 and nazwa = '" + koszyk.get(i).getNazwa() + "' LIMIT 1");
+                ResultSet resultSet1 = helper1.executeQuery();
+                int idik = 0;
+                if (resultSet1.next()) {
+                    idik = resultSet1.getInt("kompID");
+                }
+                PreparedStatement preparedStatement1 = connection.prepareStatement("UPDATE komponent SET status = 1 WHERE kompID = '" + idik + "' ");
+                preparedStatement1.executeUpdate();
+                PreparedStatement helper = connection.prepareStatement("SELECT ID FROM myuser WHERE email= '" + email + "'");
+                ResultSet resultSet = helper.executeQuery();
+                int drugiidik = 0;
+                if (resultSet.next()) {
+                    drugiidik = resultSet.getInt("ID");
+                }
+                PreparedStatement preparedStatement2 = connection.prepareStatement("INSERT INTO zakupy (ID, kompID, data) VALUES(?,?,?)");
+                preparedStatement2.setInt(1, drugiidik);
+                preparedStatement2.setInt(2, idik);
+                preparedStatement2.setString(3, date.toString());
+                System.out.println(drugiidik);
+                preparedStatement2.executeUpdate();
+
+
             }
-            PreparedStatement preparedStatement1 = connection.prepareStatement("UPDATE komponent SET status = 1 WHERE kompID = '" +idik + "' ");
-            preparedStatement1.executeUpdate();
-            PreparedStatement helper = connection.prepareStatement("SELECT ID FROM myuser WHERE email= '" +email + "'");
-            ResultSet resultSet = helper.executeQuery();
-            int drugiidik=0;
-            if (resultSet.next()) {
-                drugiidik = resultSet.getInt("ID");
-            }
-            PreparedStatement preparedStatement2 = connection.prepareStatement("INSERT INTO zakupy (ID, kompID, data) VALUES(?,?,?)");
-            preparedStatement2.setInt(1, drugiidik);
-            preparedStatement2.setInt(2, idik);
-            preparedStatement2.setString(3, date.toString());
-            System.out.println(drugiidik);
-            preparedStatement2.executeUpdate();
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE myuser SET saldo = saldo - '" + suma + "' WHERE email= '" + email + "'");
+            preparedStatement.executeUpdate();
+            connection.commit();
 
-
+        }catch(Exception e){
+            connection.rollback();
+            System.out.println("nie ma");
         }
 
-
-
-
+        connection.setAutoCommit(true);
         connection.close();
+
     }
 
     public List<String> Selecting(String email) throws SQLException {

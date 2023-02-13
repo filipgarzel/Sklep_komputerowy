@@ -72,8 +72,9 @@ public class KoszykController {
     public void kup() throws SQLException {
         if(usr.getZalogowany()){
             if (usr.getSaldo()>=suma){
-                usr.setSaldo(usr.getSaldo()-suma);
+
                 dataConnection.buying(usr.getEmail(), suma, basket);
+                usr.setSaldo(dataConnection.getKwota(usr.getEmail()));
                 koszykInfo.setText("Zakupiono");
 
             }else{
