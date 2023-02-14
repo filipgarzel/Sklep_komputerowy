@@ -13,7 +13,7 @@
                 <Font size="14.0" />
             </font></Label>
         <Button layoutX="307.0" layoutY="417.0" mnemonicParsing="false" onAction="#switchtoStart" prefHeight="25.0" prefWidth="69.0" text="Powrót" />
-      <Label fx:id="usrname" alignment="CENTER" layoutY="18.0" prefHeight="50.0" prefWidth="664.0">
+      <Label fx:id="usrname" alignment="CENTER" layoutY="18.0" prefHeight="50.0" prefWidth="664.0" textFill="#ff6a00">
          <font>
             <Font size="34.0" />
          </font></Label>

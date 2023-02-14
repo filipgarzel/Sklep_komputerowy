@@ -1,5 +1,4 @@
 package database;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.Date;
@@ -9,7 +8,6 @@ import classes.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.OptionalDouble;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -271,7 +269,6 @@ public class DataConnection {
 
 
     public void addRating(String x, String productName) throws SQLException {
-        System.out.println("wywolanie add rating");
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
         PreparedStatement preparedStatement = connection.prepareStatement("UPDATE komponent SET suma_ocen=?,ilosc_ocen=?, srednia_ocen= ? WHERE nazwa= '" +productName + "'");
         preparedStatement.setInt(1, Integer.parseInt(x));
@@ -299,14 +296,13 @@ public class DataConnection {
 
 
     public void calcRating(int x, int y, String productName) throws SQLException {
-        System.out.println("wywolanie calc rating");
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
         PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Komponent SET suma_ocen=?,ilosc_ocen=?,srednia_ocen= ? WHERE nazwa= '" +productName + "'");
         float dzielenie = (float)x/y;
         double srednia = Math.round(dzielenie*Math.pow(10, 2))
                 / Math.pow(10, 2);
-        System.out.println("dzielenie: " + dzielenie);
-        System.out.println("srednia: " + srednia);
+//        System.out.println("dzielenie: " + dzielenie);
+//        System.out.println("srednia: " + srednia);
         preparedStatement.setInt(1, x);
         preparedStatement.setInt(2,y);
         preparedStatement.setDouble(3, srednia);
@@ -325,8 +321,9 @@ public class DataConnection {
         return ilosc;
     }
 
-    public void buying(String email, int suma, List<Komponent> koszyk) throws SQLException {
+    public boolean buying(String email, int suma, List<Komponent> koszyk) throws SQLException {
         Date date = new Date();
+        boolean done= false;
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computershop","default", "haslodefault");
 
         try {
@@ -350,14 +347,13 @@ public class DataConnection {
                 preparedStatement2.setInt(1, drugiidik);
                 preparedStatement2.setInt(2, idik);
                 preparedStatement2.setString(3, date.toString());
-                System.out.println(drugiidik);
+                //System.out.println(drugiidik);
                 preparedStatement2.executeUpdate();
-
-
             }
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE myuser SET saldo = saldo - '" + suma + "' WHERE email= '" + email + "'");
             preparedStatement.executeUpdate();
             connection.commit();
+            done = true;
 
         }catch(Exception e){
             connection.rollback();
@@ -366,6 +362,7 @@ public class DataConnection {
 
         connection.setAutoCommit(true);
         connection.close();
+        return done;
 
     }
 

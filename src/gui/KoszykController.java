@@ -73,9 +73,14 @@ public class KoszykController {
         if(usr.getZalogowany()){
             if (usr.getSaldo()>=suma){
 
-                dataConnection.buying(usr.getEmail(), suma, basket);
-                usr.setSaldo(dataConnection.getKwota(usr.getEmail()));
-                koszykInfo.setText("Zakupiono");
+                if(dataConnection.buying(usr.getEmail(), suma, basket)){;
+                    usr.setSaldo(dataConnection.getKwota(usr.getEmail()));
+                    koszykInfo.setText("Zakupiono");
+                    summary.setText(null);
+                }
+                else {
+                    koszykInfo.setText("Wystąpił błąd");
+                }
 
             }else{
                 koszykInfo.setText("Za mało środków na koncie");
@@ -94,7 +99,7 @@ public class KoszykController {
         if(basket.size()>0){
             basket.remove(Integer.parseInt(delete.getText())-1);
             for (int i = 0; i < basket.size(); i++) {
-                result+= basket.get(i).getNazwa() + "\n ";
+                result+= basket.get(i).getNazwa() + "\t"+ basket.get(i).getCena()+ " zł" + "\n ";
                 suma+=Integer.parseInt(basket.get(i).getCena());
             }
             summary.setText(result);

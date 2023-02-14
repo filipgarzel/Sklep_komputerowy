@@ -26,6 +26,9 @@ public class HelloController implements Initializable {
     private Label logged;
 
     @FXML
+    private Label niedostepny;
+
+    @FXML
     private TextField haslo;
 
     @FXML
@@ -45,6 +48,9 @@ public class HelloController implements Initializable {
 
     @FXML
     private Label chosenname;
+
+    @FXML
+    private TextField wyszukaj;
 
     @FXML
     private Label chosenprice;
@@ -99,8 +105,6 @@ public class HelloController implements Initializable {
         try {sizeR = dataConnection.getRAM().size();}
         catch (SQLException e) {e.printStackTrace();}
     }
-
-
 
     public HelloController() throws ClassNotFoundException {
     }
@@ -208,15 +212,17 @@ public class HelloController implements Initializable {
 
     public void switchtoSzczegoly(ActionEvent event)throws Exception {
         //FXMLLoader fxmlLoader = FXMLLoader.load(HelloApplication.class.getResource("details.fxml"));
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("details.fxml"));
-        //AnchorPane anchor = fxmLoader.load();
-        Parent root = fxmlLoader.load();
-        DetailsController detailsController = fxmlLoader.getController();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-        detailsController.setDetails(temp, myListener);
+        if (!temp.equals(null)){
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("details.fxml"));
+            //AnchorPane anchor = fxmLoader.load();
+            Parent root = fxmlLoader.load();
+            DetailsController detailsController = fxmlLoader.getController();
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+            detailsController.setDetails(temp, myListener);
+        }
 
     }
 
@@ -243,7 +249,16 @@ public class HelloController implements Initializable {
     }
 
     public void dodajDoKoszyka(ActionEvent event) {
-        wKoszyku.add(temp);
+        try {
+            if (dataConnection.getIlosc(temp.getNazwa())!=0) {
+                wKoszyku.add(temp);
+            }
+            else {
+                niedostepny.setText("Produkt niedostępny");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -401,6 +416,36 @@ public class HelloController implements Initializable {
         }
     }
 
+    public void wyszukiwanie(ActionEvent event) {
+        components.clear();
+        int x = 0;
+        for(int i=0; i<size; i++) {
+            try {
+                if (dataConnection.getKomponent().get(i).getNazwa().contains(wyszukaj.getText())) {
+                    if (dataConnection.getKomponent().get(i).getNazwa().equals(dataConnection.getKomponent().get(i+1).getNazwa())){
+                        x += 1;
+                        continue;
+                    }
+                    else {
+                        int occurrences = x + 1;
+                        dataConnection.getKomponent().get(i).setIlosc(occurrences);
+                        components.add(dataConnection.getKomponent().get(i));
+                        x = 0;
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (wyszukaj.getText().equals(null)){
+            try {
+                components.addAll(getData());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        loadGrid(components, mygrid);
+    }
 
     private List<Komponent> getData() throws SQLException {
         int x = 0;
@@ -504,7 +549,16 @@ public class HelloController implements Initializable {
 
     private void setChosenComponent(Komponent komponent) {
         chosenname.setText(komponent.getNazwa());
-        chosenprice.setText(komponent.getCena() + "zł");
+        try {
+            if (dataConnection.getIlosc(komponent.getNazwa())!=0){
+                chosenprice.setText(komponent.getCena() + "zł");            }
+            else {
+                chosenprice.setText("niedostępny");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -519,6 +573,7 @@ public class HelloController implements Initializable {
         }
         filtruj.setOnAction(this::filtrowanie);
         sortuj.setOnAction(this::sortowanie);
+        //wyszukaj2.setOnAction(this::wyszukiwanie);
         myListener = new MyListener() {
             @Override
             public void onClickListener(Komponent komponent) {

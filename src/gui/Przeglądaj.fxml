@@ -50,12 +50,12 @@
                               <Insets left="-90.0" right="-90.0" />
                            </VBox.margin>
                            <children>
-                              <Label fx:id="chosenname" prefHeight="31.0" prefWidth="131.0" text="I7-10700F" textFill="#fffefe">
+                              <Label fx:id="chosenname" prefHeight="31.0" prefWidth="131.0" textFill="#fffefe">
                                  <font>
                                     <Font name="Berlin Sans FB Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="chosenprice" prefHeight="80.0" prefWidth="62.0" text="1200 zł" textFill="WHITE">
+                              <Label fx:id="chosenprice" prefHeight="80.0" prefWidth="62.0" textFill="WHITE">
                                  <font>
                                     <Font name="Berlin Sans FB Bold" size="18.0" />
                                  </font>
@@ -76,6 +76,14 @@
                   <Pane prefHeight="131.0" prefWidth="221.0">
                      <children>
                         <Button layoutX="55.0" layoutY="14.0" mnemonicParsing="false" onAction="#dodajDoKoszyka" text="Dodaj do koszyka" />
+                        <Pane layoutX="16.0" layoutY="31.0" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Pane layoutX="-14.0" layoutY="101.0" prefHeight="91.0" prefWidth="165.0" />
+                              <Label fx:id="niedostepny" alignment="CENTER" layoutX="33.0" layoutY="36.0" prefHeight="55.0" prefWidth="134.0" textFill="#ff6a00" wrapText="true">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font></Label>
+                           </children></Pane>
                      </children>
                   </Pane>
                </children>
@@ -105,7 +113,8 @@
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <TextField layoutX="28.0" layoutY="38.0" promptText="Wyszukaj" />
+                              <TextField fx:id="wyszukaj" layoutX="28.0" layoutY="38.0" prefHeight="25.0" prefWidth="119.0" promptText="Wyszukaj" />
+                              <Button layoutX="149.0" layoutY="38.0" mnemonicParsing="false" onAction="#wyszukiwanie" text="OK" />
                            </children>
                         </Pane>
                      </children>
